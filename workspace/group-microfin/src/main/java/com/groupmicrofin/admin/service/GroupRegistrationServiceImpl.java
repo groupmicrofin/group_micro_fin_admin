@@ -5,13 +5,14 @@ import com.groupmicrofin.admin.repository.GroupMasterRepository;
 import com.groupmicrofin.admin.repository.GroupMasterRepositoryMSImpl;
 
 public class GroupRegistrationServiceImpl implements GroupRegistrationService {
-    private GroupMasterRepository groupMasterRepository;
+    private final GroupMasterRepository groupMasterRepository;
 
-    public GroupRegistrationServiceImpl(){
-        groupMasterRepository = new GroupMasterRepositoryMSImpl();
+    public GroupRegistrationServiceImpl() {
+        this.groupMasterRepository = new GroupMasterRepositoryMSImpl();
     }
 
+    @Override
     public void addGroupMaster(GroupMaster groupMaster) {
-        groupMasterRepository.addGroupMaster(groupMaster);
+        this.groupMasterRepository.addGroupMaster(groupMaster);
     }
 }

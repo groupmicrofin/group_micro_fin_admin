@@ -1,7 +1,6 @@
 package com.groupmicrofin.admin.model.rule;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class RuleBook {
     private int groupMasterId;
@@ -26,9 +25,18 @@ public class RuleBook {
     private String eventName;
     private int txnAmt;
     private int txnAmtOther;
+    private LocalDate lastMeetingDate;
+
+    public LocalDate getLastMeetingDate() {
+        return this.lastMeetingDate;
+    }
+
+    public void setLastMeetingDate(LocalDate lastMeetingDate) {
+        this.lastMeetingDate = lastMeetingDate;
+    }
 
     public int getGroupMasterId() {
-        return groupMasterId;
+        return this.groupMasterId;
     }
 
     public void setGroupMasterId(int groupMasterId) {
@@ -36,7 +44,7 @@ public class RuleBook {
     }
 
     public LocalDate getGroupStartDt() {
-        return groupStartDt;
+        return this.groupStartDt;
     }
 
     public void setGroupStartDt(LocalDate groupStartDt) {
@@ -44,7 +52,7 @@ public class RuleBook {
     }
 
     public int getMeetingFrequency() {
-        return meetingFrequency;
+        return this.meetingFrequency;
     }
 
     public void setMeetingFrequency(int meetingFrequency) {
@@ -52,7 +60,7 @@ public class RuleBook {
     }
 
     public String getMeetingSchedule() {
-        return meetingSchedule;
+        return this.meetingSchedule;
     }
 
     public void setMeetingSchedule(String meetingSchedule) {
@@ -60,7 +68,7 @@ public class RuleBook {
     }
 
     public int getYearEndMonth() {
-        return yearEndMonth;
+        return this.yearEndMonth;
     }
 
     public void setYearEndMonth(int yearEndMonth) {
@@ -68,7 +76,7 @@ public class RuleBook {
     }
 
     public float getShareFaceValue() {
-        return shareFaceValue;
+        return this.shareFaceValue;
     }
 
     public void setShareFaceValue(float shareFaceValue) {
@@ -76,7 +84,7 @@ public class RuleBook {
     }
 
     public float getLnIntRate() {
-        return lnIntRate;
+        return this.lnIntRate;
     }
 
     public void setLnIntRate(float lnIntRate) {
@@ -84,7 +92,7 @@ public class RuleBook {
     }
 
     public int getLnIntBase() {
-        return lnIntBase;
+        return this.lnIntBase;
     }
 
     public void setLnIntBase(int lnIntBase) {
@@ -92,7 +100,7 @@ public class RuleBook {
     }
 
     public float getLnDisbAmtMaxLimPercent() {
-        return lnDisbAmtMaxLimPercent;
+        return this.lnDisbAmtMaxLimPercent;
     }
 
     public void setLnDisbAmtMaxLimPercent(float lnDisbAmtMaxLimPercent) {
@@ -100,7 +108,7 @@ public class RuleBook {
     }
 
     public int getLnMaxActiveLoanCount() {
-        return lnMaxActiveLoanCount;
+        return this.lnMaxActiveLoanCount;
     }
 
     public void setLnMaxActiveLoanCount(int lnMaxActiveLoanCount) {
@@ -108,7 +116,7 @@ public class RuleBook {
     }
 
     public int getLnGaurantersCount() {
-        return lnGaurantersCount;
+        return this.lnGaurantersCount;
     }
 
     public void setLnGaurantersCount(int lnGaurantersCount) {
@@ -116,7 +124,7 @@ public class RuleBook {
     }
 
     public int getLnMaxInstallmentCount() {
-        return lnMaxInstallmentCount;
+        return this.lnMaxInstallmentCount;
     }
 
     public void setLnMaxInstallmentCount(int lnMaxInstallmentCount) {
@@ -124,7 +132,7 @@ public class RuleBook {
     }
 
     public double getFeeAmtNoSharePayout() {
-        return feeAmtNoSharePayout;
+        return this.feeAmtNoSharePayout;
     }
 
     public void setFeeAmtNoSharePayout(double feeAmtNoSharePayout) {
@@ -132,7 +140,7 @@ public class RuleBook {
     }
 
     public int getFeeWaiverNoCycles() {
-        return feeWaiverNoCycles;
+        return this.feeWaiverNoCycles;
     }
 
     public void setFeeWaiverNoCycles(int feeWaiverNoCycles) {
@@ -140,7 +148,7 @@ public class RuleBook {
     }
 
     public int getAmtRoundingDecDigits() {
-        return amtRoundingDecDigits;
+        return this.amtRoundingDecDigits;
     }
 
     public void setAmtRoundingDecDigits(int amtRoundingDecDigits) {
@@ -148,7 +156,7 @@ public class RuleBook {
     }
 
     public int getAmtShareFacBal() {
-        return amtShareFacBal;
+        return this.amtShareFacBal;
     }
 
     public void setAmtShareFacBal(int amtShareFacBal) {
@@ -156,7 +164,7 @@ public class RuleBook {
     }
 
     public int getAmtShareFacBalOthers() {
-        return amtShareFacBalOthers;
+        return this.amtShareFacBalOthers;
     }
 
     public void setAmtShareFacBalOthers(int amtShareFacBalOthers) {
@@ -164,7 +172,7 @@ public class RuleBook {
     }
 
     public int getAmtMiscDr() {
-        return amtMiscDr;
+        return this.amtMiscDr;
     }
 
     public void setAmtMiscDr(int amtMiscDr) {
@@ -173,21 +181,23 @@ public class RuleBook {
 
 
     public int getGroupMemberId() {
-        return groupMemberId;
+        return this.groupMemberId;
     }
 
     public void setGroupMemberId(int groupMemberId) {
         this.groupMemberId = groupMemberId;
     }
+
     public String getEventName() {
-        return eventName;
+        return this.eventName;
     }
 
     public void setEventName(String eventName) {
         this.eventName = eventName;
     }
+
     public int getTxnAmt() {
-        return txnAmt;
+        return this.txnAmt;
     }
 
     public void setTxnAmt(int txnAmt) {
@@ -195,7 +205,7 @@ public class RuleBook {
     }
 
     public int getTxnAmtOther() {
-        return txnAmtOther;
+        return this.txnAmtOther;
     }
 
     public void setTxnAmtOther(int txnAmtOther) {

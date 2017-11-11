@@ -14,24 +14,24 @@ import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 public class GroupRegistrationIntTest {
-
+    //Testing change
     GroupMasterRepository groupMasterRepository;
     GroupParamRepository groupParamRepository;
 
     @Before
-    public void setup(){
-        groupMasterRepository = new GroupMasterRepositoryMSImpl();
-        groupParamRepository = new GroupParamRepositoryMSImpl();
+    public void setup() {
+        this.groupMasterRepository = new GroupMasterRepositoryMSImpl();
+        this.groupParamRepository = new GroupParamRepositoryMSImpl();
     }
 
     @Test
     public void groupRegistrationTest() {
         GroupMaster groupMaster = GroupAdminFactory.getGroupMasterDummy();
-        int result = groupMasterRepository.addGroupMaster(groupMaster);
-        Assert.assertTrue(result>0);;
+        int result = this.groupMasterRepository.addGroupMaster(groupMaster);
+        Assert.assertTrue(result > 0);
 
-        GroupParam groupParam = GroupAdminFactory.getGroupParamDummy(1);
-        result = groupParamRepository.addGroupParam(groupParam);
+        GroupParam groupParam = GroupAdminFactory.getGroupParamDummy(groupMaster.getId());
+        result = this.groupParamRepository.addGroupParam(groupParam);
         assertTrue(result > 0);
     }
 }

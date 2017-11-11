@@ -5,19 +5,22 @@ import com.groupmicrofin.admin.model.GroupMaster;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
+
 public class GroupRegistrationServiceTest {
 
     private GroupRegistrationService groupRegistrationService;
 
     @Before
-    public void setup(){
-        groupRegistrationService = new GroupRegistrationServiceImpl();
+    public void setup() {
+        this.groupRegistrationService = new GroupRegistrationServiceImpl();
     }
 
     @Test
-    public void addGroupMasterTest(){
+    public void addGroupMasterTest() {
         GroupMaster groupMaster = GroupAdminFactory.getGroupMasterDummy();
-        groupRegistrationService.addGroupMaster(groupMaster);
+        this.groupRegistrationService.addGroupMaster(groupMaster);
+        assertTrue(groupMaster.getId() > 0);
     }
 
 }

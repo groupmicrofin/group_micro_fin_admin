@@ -17,7 +17,7 @@ public class GroupMaster {
 
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(int id) {
@@ -25,7 +25,7 @@ public class GroupMaster {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -33,7 +33,7 @@ public class GroupMaster {
     }
 
     public String getCountry() {
-        return country;
+        return this.country;
     }
 
     public void setCountry(String country) {
@@ -41,7 +41,7 @@ public class GroupMaster {
     }
 
     public String getTown() {
-        return town;
+        return this.town;
     }
 
     public void setTown(String town) {
@@ -49,7 +49,7 @@ public class GroupMaster {
     }
 
     public String getPincode() {
-        return pincode;
+        return this.pincode;
     }
 
     public void setPincode(String pincode) {
@@ -57,7 +57,7 @@ public class GroupMaster {
     }
 
     public String getLoginId() {
-        return loginId;
+        return this.loginId;
     }
 
     public void setLoginId(String loginId) {
@@ -65,7 +65,7 @@ public class GroupMaster {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -73,7 +73,7 @@ public class GroupMaster {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
@@ -81,7 +81,7 @@ public class GroupMaster {
     }
 
     public LocalDateTime getAuditCreatedDttm() {
-        return auditCreatedDttm;
+        return this.auditCreatedDttm;
     }
 
     public void setAuditCreatedDttm(LocalDateTime auditCreatedDttm) {
@@ -89,10 +89,25 @@ public class GroupMaster {
     }
 
     public LocalDateTime getAuditUpdatedDttm() {
-        return auditUpdatedDttm;
+        return this.auditUpdatedDttm;
     }
 
     public void setAuditUpdatedDttm(LocalDateTime auditUpdatedDttm) {
         this.auditUpdatedDttm = auditUpdatedDttm;
+    }
+
+    @Override
+    public String toString() {
+        return "GroupMaster{" +
+                "id=" + this.id +
+                ", name='" + this.name + '\'' +
+                ", country='" + this.country + '\'' +
+                ", town='" + this.town + '\'' +
+                ", pincode='" + this.pincode + '\'' +
+                ", loginId='" + this.loginId + '\'' +
+                ", email='" + this.email + '\'' +
+                ", auditCreatedDttm=" + this.auditCreatedDttm +
+                ", auditUpdatedDttm=" + this.auditUpdatedDttm +
+                '}';
     }
 }

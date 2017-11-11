@@ -3,16 +3,20 @@ package com.groupmicrofin.admin.repository;
 import com.groupmicrofin.admin.model.GroupBalance;
 import com.groupmicrofin.util.ConnectionManager;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class GroupBalanceRepositoryMSImpl implements GroupBalanceRepository {
 
 
+    @Override
     public int addGroupBalance(GroupBalance groupBalance) {
         //To connect with database
-        Connection conn=null;
-        PreparedStatement preparedStatement=null;
-        int result=0;
+        Connection conn = null;
+        PreparedStatement preparedStatement = null;
+        int result = 0;
         try {
             conn = ConnectionManager.getConnection();
             String INSERT_GROUP_M_SQL;
@@ -21,18 +25,18 @@ public class GroupBalanceRepositoryMSImpl implements GroupBalanceRepository {
 
             preparedStatement = conn.prepareStatement(INSERT_GROUP_M_SQL);
 
-            preparedStatement.setInt(1,groupBalance.getGroupMasterId());
-            preparedStatement.setString(2,groupBalance.getAssessmentYear());
-            preparedStatement.setInt(3,groupBalance.getAmtShareFacBal());
-            preparedStatement.setInt(4,groupBalance.getAmtShareFacBalOthers());
-            preparedStatement.setInt(5,groupBalance.getCycleNo());
-            preparedStatement.setInt(6,groupBalance.getAmtMiscDr());
-            preparedStatement.setDate(7,Date.valueOf(groupBalance.getDatLastMeeting()));
-            preparedStatement.setDate(8,Date.valueOf(groupBalance.getDatNextMeeting()));
-            preparedStatement.setString(9,groupBalance.getLastActivityStatus("value changed"));
+            preparedStatement.setInt(1, groupBalance.getGroupMasterId());
+            preparedStatement.setString(2, groupBalance.getAssessmentYear());
+            preparedStatement.setInt(3, groupBalance.getAmtShareFacBal());
+            preparedStatement.setInt(4, groupBalance.getAmtShareFacBalOthers());
+            preparedStatement.setInt(5, groupBalance.getCycleNo());
+            preparedStatement.setInt(6, groupBalance.getAmtMiscDr());
+            preparedStatement.setDate(7, Date.valueOf(groupBalance.getDatLastMeeting()));
+            preparedStatement.setDate(8, Date.valueOf(groupBalance.getDatNextMeeting()));
+            preparedStatement.setString(9, groupBalance.getLastActivityStatus("value changed"));
 
 
-
+//TODO get generated keys to update MODEL object
             result = preparedStatement.executeUpdate();
 
             conn.commit();
@@ -45,14 +49,14 @@ public class GroupBalanceRepositoryMSImpl implements GroupBalanceRepository {
             }
             e.printStackTrace();
         } finally {
-            if(preparedStatement!=null){
+            if (preparedStatement != null) {
                 try {
                     preparedStatement.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
-            if(conn!=null){
+            if (conn != null) {
                 try {
                     conn.close();
                 } catch (SQLException e) {
@@ -65,6 +69,7 @@ public class GroupBalanceRepositoryMSImpl implements GroupBalanceRepository {
         return result;
     }
 
+    @Override
     public void modifyGroupBalance(GroupBalance groupBalance) {
         //TODO In future provide implementation of GroupBalance based on user story
     }

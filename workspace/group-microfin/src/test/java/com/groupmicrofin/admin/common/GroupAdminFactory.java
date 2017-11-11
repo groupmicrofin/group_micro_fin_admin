@@ -4,6 +4,7 @@ import com.groupmicrofin.admin.model.GroupBalance;
 import com.groupmicrofin.admin.model.GroupMaster;
 import com.groupmicrofin.admin.model.GroupParam;
 import com.groupmicrofin.admin.model.GrpTxnLog;
+import com.groupmicrofin.admin.model.rule.RuleBook;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 
 public class GroupAdminFactory {
 
-    public static GroupMaster getGroupMasterDummy(){
+    public static GroupMaster getGroupMasterDummy() {
         GroupMaster groupMaster = new GroupMaster();
         groupMaster.setCountry("India");
         groupMaster.setEmail("omar@groupfin.com");
@@ -20,11 +21,11 @@ public class GroupAdminFactory {
         groupMaster.setPassword("password");
         groupMaster.setPincode("38933933");
         groupMaster.setTown("sringar");
-        groupMaster.setId(398);
+        //groupMaster.setId(398);
         return groupMaster;
     }
 
-    public static GroupParam getGroupParamDummy(int groupMasterId){
+    public static GroupParam getGroupParamDummy(int groupMasterId) {
 
         GroupParam groupParam = new GroupParam();
         groupParam.setGroupMasterId(groupMasterId);
@@ -46,18 +47,19 @@ public class GroupAdminFactory {
 
         return groupParam;
     }
-    public static GroupBalance getGroupBalanceDummy(int groupMasterId){
+
+    public static GroupBalance getGroupBalanceDummy(int groupMasterId) {
 
         GroupBalance groupBalance = new GroupBalance();
         groupBalance.setGroupMasterId(groupMasterId);
-        String assessmentYear = "" + LocalDate.now().getYear() + "-" + (LocalDate.now().getYear()+1);
+        String assessmentYear = "" + LocalDate.now().getYear() + "-" + (LocalDate.now().getYear() + 1);
         groupBalance.setAssessmentYear(assessmentYear);
         groupBalance.setAmtShareFacBal(1000);
         groupBalance.setAmtShareFacBalOthers(1500);
         groupBalance.setCycleNo(2);
         groupBalance.setAmtMiscDr(100);
-        groupBalance.setDatLastMeeting(LocalDate.of(2005,11,15));
-        groupBalance.setDatNextMeeting(LocalDate.of(2005,12,15));
+        groupBalance.setDatLastMeeting(LocalDate.of(2005, 11, 15));
+        groupBalance.setDatNextMeeting(LocalDate.of(2005, 12, 15));
         groupBalance.setLastActivityStatus("value changed");
 
 
@@ -77,6 +79,13 @@ public class GroupAdminFactory {
         grpTxnLog.setDatTxn(LocalDateTime.of(2010, 04, 11, 11, 40));
         grpTxnLog.setFucolmn1("Future");
         return grpTxnLog;
+    }
+
+    public static RuleBook getRuleBookDummy(int groupMasterId) {
+        RuleBook ruleBook = new RuleBook();
+        ruleBook.setGroupMasterId(groupMasterId);
+        //TODO set test case specific data in object
+        return ruleBook;
     }
 
 }

@@ -1,44 +1,61 @@
 package com.groupmicrofin.admin.service;
 
-import com.groupmicrofin.admin.model.*;
+import com.groupmicrofin.admin.model.GroupBalance;
+import com.groupmicrofin.admin.model.GroupParam;
+import com.groupmicrofin.admin.model.GrpTxnLog;
 import com.groupmicrofin.admin.model.rule.RuleBook;
 import com.groupmicrofin.admin.repository.*;
 
+import java.time.LocalDate;
+
 public class RuleBookServiceImpl implements RuleBookService {
 
-    private GroupMasterRepository groupMasterRepository;
-    private GroupParamRepository groupParamRepository;
-    private GroupBalanceRepository groupBalanceRepository;
-    private GrpTxnLogRepository grpTxnLogRepository;
-    //TODO group txn log repository.
+    private final GroupMasterRepository groupMasterRepository;
+    private final GroupParamRepository groupParamRepository;
+    private final GroupBalanceRepository groupBalanceRepository;
+    private final GrpTxnLogRepository grpTxnLogRepository;
 
-    public RuleBookServiceImpl(){
-        groupMasterRepository = new GroupMasterRepositoryMSImpl();
-        groupBalanceRepository = new GroupBalanceRepositoryMSImpl();
-        groupParamRepository = new GroupParamRepositoryMSImpl();
-        grpTxnLogRepository=new GrpTxnLogRepositoryMSImpl();
+    public RuleBookServiceImpl() {
+        this.groupMasterRepository = new GroupMasterRepositoryMSImpl();
+        this.groupBalanceRepository = new GroupBalanceRepositoryMSImpl();
+        this.groupParamRepository = new GroupParamRepositoryMSImpl();
+        this.grpTxnLogRepository = new GrpTxnLogRepositoryMSImpl();
 
     }
 
     @Override
     public void addRuleBookToGroup(RuleBook ruleBook) {
 
-       // GroupMaster groupMaster = groupMasterRepository.findGroupMasterById(ruleBook.getGroupMasterId());
+        // GroupMaster groupMaster = groupMasterRepository.findGroupMasterById(ruleBook.getGroupMasterId());
         GroupParam groupParam = convertToGroupParam(ruleBook);
-        //TODO system generated fields required to be updated in groupParam
-        groupParamRepository.addGroupParam(groupParam);
+        int assessmentYears = getAssessmentYears(ruleBook.getGroupStartDt(), ruleBook.getLastMeetingDate(), ruleBook.getYearEndMonth());
+        groupParam.setAssessmentYear(String.valueOf(assessmentYears));
+        this.groupParamRepository.addGroupParam(groupParam);
 
-        GroupBalance groupBalance = convertToGroupBalance(ruleBook);
-        /* TODO system generated fields required to be updated in groupParam */
-        groupBalanceRepository.addGroupBalance(groupBalance);
+        /*GroupBalance groupBalance = convertToGroupBalance(ruleBook);
+        *//* TODO system generated fields required to be updated in groupParam *//*
+        this.groupBalanceRepository.addGroupBalance(groupBalance);
 
         GrpTxnLog grpTxnLog = convertToGrpTxnLog(ruleBook);
         //TODO system generated fields required to be updated in groupParam
-        grpTxnLogRepository.addGrpTxnLog(grpTxnLog);
+        this.grpTxnLogRepository.addGrpTxnLog(grpTxnLog);*/
     }
 
-/*for group param*/
-    protected GroupParam convertToGroupParam(RuleBook ruleBook){
+
+    public int getAssessmentYears(LocalDate grpStartDate, LocalDate lastMeetingDate, int yearEndMonth) {
+        int totalAssessmentYears = 0;
+        int startYear = grpStartDate.getYear();
+        int lastMeetingYear = lastMeetingDate.getYear();
+        int lastMeetingMonth = lastMeetingDate.getMonthValue();
+        totalAssessmentYears = (lastMeetingYear - startYear) + 1;
+        if (lastMeetingMonth > yearEndMonth) {
+            totalAssessmentYears = totalAssessmentYears + 1;
+        }
+        return totalAssessmentYears;
+    }
+
+    /*for group param*/
+    protected GroupParam convertToGroupParam(RuleBook ruleBook) {
         GroupParam groupParam = new GroupParam();
 
         groupParam.setGroupMasterId(ruleBook.getGroupMasterId());
@@ -61,7 +78,7 @@ public class RuleBookServiceImpl implements RuleBookService {
     }
 
     /*for group balance*/
-    protected GroupBalance convertToGroupBalance(RuleBook ruleBook){
+    protected GroupBalance convertToGroupBalance(RuleBook ruleBook) {
         GroupBalance groupBalance = new GroupBalance();
         groupBalance.setGroupMasterId(ruleBook.getGroupMasterId());
         groupBalance.setAmtShareFacBal(ruleBook.getAmtShareFacBal());
@@ -82,5 +99,5 @@ public class RuleBookServiceImpl implements RuleBookService {
         return grpTxnLog;
 
     }
-    }
+}
 
