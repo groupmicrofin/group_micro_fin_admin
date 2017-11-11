@@ -1,0 +1,16 @@
+1. Understood requirement, i shown flow
+2. First Use case
+		To register group
+			<<Dev>>
+			1. Create table and DDL File(reference) : Refer Data dictionary from excel
+			2. Model Java Class (Row representation of table)
+			3. Repository interface (this will just define rules/method signatures)
+			4. Repository implementation class (H2 Database)
+			5. Service interface
+			6. Service Implementation
+			
+			
+Run Java program
+	java classname
+		> Create one Main Thread put that in memory
+		

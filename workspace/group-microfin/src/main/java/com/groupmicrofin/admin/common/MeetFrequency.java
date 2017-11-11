@@ -1,0 +1,17 @@
+package com.groupmicrofin.admin.common;
+public enum MeetFrequency {
+
+    MONTHLY(1), BIMONTHLY(2), QUATERLY(3), HALFYEARLY(4), YEARLY(5);
+
+    public int value;
+
+     MeetFrequency(int value)
+    {
+        this.value=value;
+    }
+
+    public int getValue()
+    {
+        return this.value;
+    }
+}

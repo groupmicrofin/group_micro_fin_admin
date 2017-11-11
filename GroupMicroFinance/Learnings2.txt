@@ -1,0 +1,21 @@
+
+--1 way of representation for data....XML... XSD.. schema definition...
+<person>
+	<name>jignesh</name>
+	<addresses length=1>
+		<address>bhairav raisesdfsf</address>
+		<address>shrinagar</address>
+	</addresses>
+	<phoneno>2329292337423</phoneno>
+	<birthdate>10/11/2015</birthdate>
+	<age>28</age>
+</person>
+
+--2 way of representing data... JSON format (java script object notation)
+
+{"person":{"name":"jignesh",["address":"bhairav raisesdfsf","address":"shrinagar"], "phoneno":"2329292337423", "birthdate":"10/11/2015", "age":28 } }
+
+Number
+String
+Array List of data []
+Object 

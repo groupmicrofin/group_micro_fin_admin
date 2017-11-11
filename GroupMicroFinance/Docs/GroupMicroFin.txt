@@ -1,0 +1,287 @@
+GroupMicroFin
+
+Company: GroupMicroFin
+
+Collaborative finance or PartnerHand or ROSCA or ASCA or VSLA or EMoneyPool finance application.
+This application will support below financial model.
+	Group of people decided to accumulate defined share amount(Generally very small amount like 100 INR) on defined frequency (Generally it will be once in every month). On every defined frequency all defined group members meet and accumulate share amount to Admin member. This pool amount can be given as loan to any of required group members with charging on defined interest rate(generally it will be 1% per month). On every year end month, group members can decide payout on earned interest amount through out the years (Generally they will distribute equivalent amount to group members OR decide to add amount on there existing balanced share amount).
+
+Product Backlog (UserStories)
+(1) Group Admin user should be able to register with application.
+(2) Group Admin user shoule be able to maintaine EmoneyPool/RuleBook parameters.
+(3) Group Admin user should be able to add/register group member.
+(4) On defined meeting frequency day, to provide notification to Admin User about scheduled meeting information.
+(5) On defined meeting frequency day, Allow Admin user to confirm share and loan installment amount collections from group member users.
+(6) On defined meeting frequency day, Report or Ordered list of users eligible for loan amount. (Information like UserName, Last Loan Date, Balance Loan Amount etc..)
+(7) On defined meeting frequency day, Allow Admin user to provide loan disbursment to group members. 
+(8) Dashboard to show 
+	(8.1) Dashboard, Group Name, Cycle No, Total Members, Total Base Share Amount Value, Total Other Share Amount Value, Total Loan Amount Value, Cash Balance Amount, Interest Income.
+	(8.2) Dashboard, On Meeting Day: Meeting Date, Total collected amount from meeting, Pending Share Members for share amount payment, Total Dibursed Loan Amount, Eligible Max Loan Amount.
+	(8.3) On YearEnd Day: Year End Date, Total Disbursed Loan Amount, Total Interest Income, Total Pending Loan Balance.
+(9) Add One time Additional Share amount for all group members, this will be used in event such as on yearly meeting decided to add incomed interest amount as share balance to all group members.
+(10) Admin can send Mail Notification Report(Report Header Information of DashBoard Mentioned on point-8.1, Report Detail will have informaiton like SrlNo, Member Name, Total Loan Balance, Total Loan Disbursed of day, Installment Payment of Day etc) to all members on Meeting day.
+(11) Admin can be able to perform backup of data.
+(12) Online interface for storing data in centralized db
+(13) Member Login and DashBoard for Member
+(14) Year End Activity, 
+	Distribute income (DR Income and CR cash)
+	Add other share balance
+(15) Year End Report
+	Group Header - Year start and End date, Running Year count, Individual share balance
+	Detail - Member ID, Name, Loan Count, Total disbursed loan, Pending loan balance, Interest income
+	Group Footer - Total disbursed loan amount,  pending loan balance, total interest income, cash balance
+(16) Misc Expense Log
+	
+Release-1 User Stories
+	(1), (2), (3), (5), (7), (8.1), (8.2) 
+Release-2 User Stories
+	(4), (6), (8.3), (9), (10), (11), (12), (13)
+
+(1) Download/Install App
+
+(2) Group Registration
+	GroupMaster
+	- Id (system generated unique no)
+	- Name
+	- Country
+	- VillageName
+	- Pincode
+	- LoginId
+	- MailID
+	- Password
+	
+	PrimaryKey - Id, LoginId, Name
+	L.A.E. - A:GROUP_REG
+	
+(3) Group RuleBook
+	GroupParam
+	- Id (system generated unique no)
+	- GroupMasterId (Id of Group Master table)
+	- YYYYOfStart (Input can be taken for current cycle no, app will automatically calculate start date)
+	- MeetingPeriod [Monthly, BiMonthly, Quaterly, HalfYearly, Yearly]
+	- MeetingDay [LastSundayOfMonth, LastSaturdayOfMonth, DD of the Month] (Picklist can show DD and Day Column of current month, user can either choose Day or DayName Of Month)
+		E.x. if user selected 22 then it will be stored as D-22 (i.e. 22 date of every month), 
+		     if user selected Sunday from last week then it will be stored as W-4-7 (i.e. 7 the day of 4th week of month)
+		     if user selected saturday from last week then it will be stored as W-3-6
+	- YearEndMonth [Jan, Feb..Dec]
+		(Used to derive year end)
+	- ShareFaceValue [200, 100 etc]
+		(Used to derive current base share face value)
+	- LoanRateOfInterest [Yearly, ideally 12%]
+	- LoanInterestBase 
+		(by default same as of MeetingPeriod) [Daily, Monthly, BiMonthly, Quaterly, HalfYearly, Yearly]
+	- DisburseLimitPerc
+		(Percentage of User AvailableFund which can be disbursed at max, This will be used to derive user loan disbursmenet max limit amount)
+		E.x. 200% value will allow user to disburse double value of ShareFaceBalance as max
+	- NoOfAllowedActiveLoan 
+		(Maximum active loan user can take)
+	- NoOfGauranters 
+		(Number of gauranter users required to be collatoral for user loan disbursment)
+	- NoOfInstallments 
+		(This will derive minimum amount required to be paid @ each meetingperiod, ideally EMI of 20 installements)
+	- FeeAmountForNoPayout 
+		(Fixed amount which will be charged if share amount not paid)
+	- FeeWaiverInstallments 
+		(Waive installement for mentioned period)
+	- AssessmentYear
+		(It will be having running year in YYYY-YYYY format, maintained by application)
+		L.A.E.
+			A:RULE_BOOK_MNT/T:POST:YEAREND => AssessmentYear = Current_year_YYYY + "-" + next_year_YYYY
+
+	PrimaryKey - Id, GroupMasterId
+	ForiegnKey - GroupMasterId
+	*Fields are one time mnt and cant be updated on subsequent attemp.
+	L.A.E.  
+		A:RULE_BOOK_MNT
+		M:RULE_BOOK_MNT
+	
+	GroupBalance
+	- Id (system generated unique no)
+	- GroupMasterId (Id of Group Master table)
+	- AssessmentYear (YYYY-YYYY record will be linked to GroupParam.AssessmentYear)
+		T:POST:YEAREND => AssessmentYear = GroupParam.AssessmentYear
+	- ShareFaceBalance
+		(Individual share holder current Share amount balance)
+		L.A.E. 
+			T:POST:COLLECTION => ShareFaceBalance = ShareFaceBalance + ShareFaceValue
+	- ShareFaceBalanceOther
+		(Any other miscellenious face share balance amount, like on year end decided to distribute money equally to all members)
+		L.A.E. 
+			T:OTHER_SHARE_DISBURSE => ShareFaceBalanceOther = ShareFaceBalanceOther + <<INPUT_FACE_AMOUNT_OTHER>>
+	- CycleNo 
+		(Last meeting cycle no)
+		L.A.E. 
+			T:PRE:MEETING => CycleNo = CycleNo + 1
+	- dat_last_meeting
+		(Last meeting date)
+		L.A.E. 
+			T:POST:MEETING => dat_last_meeting = Today_Date
+	- dat_next_meeting
+		(Next meeting date)
+		L.A.E. 
+			T:POST:MEETING => dat_next_meeting = Derive_Based_On values of MeetingPeriod and MeetingDay
+				E.x. MeetingPeriod as Monthly and MeetingDay as W-4-7 then getNextMonthDateOfLastWeekSunday
+	- LastActivityStatus
+		(Last completed status of activity, this will assist in case of application stoped in middle of meeting collection and to resume operation)
+		L.A.E. 
+			T:PRE:MEETING
+			T:PRE:COLLECTION
+			T:POST:COLLECTION
+			T:PRE:LOANDISBURSE
+			T:POST:LOANDISBURSE
+			T:PRE:YEAREND
+			T:POST:MEETING
+			T:POST:YEAREND
+
+	PrimaryKey - Id, GroupMasterId, Year
+	ForiegnKey - GroupMasterId
+
+	L.A.E.
+		A:RULE_BOOK_MNT => New entry will be inserted
+		M:RULE_BOOK_MNT => Update user inputed entries to record of GroupParam.AssessmentYear
+		T:POST:YEAREND =>
+			GroupBalanceHistory (History table)
+				Carry Forward values of GroupMasterID,  AssessmentYear, ShareFaceBalance, ShareFaceBalanceOther, CycleNo, dat_last_meeting, dat_next_meeting
+(4) Add Member
+	GroupMember
+	- Id (system generated unique no)
+	- GroupMasterId (system linked group id, as member will be added by Group Master)
+	- Name
+	- *LoginId
+	- Email
+	- *Password
+	- MobileNo
+	- DateOfBirth
+	- KycId (Adhar No/PAN No/Driving Licence No/Passport No)
+	- CycleNo (shows for cycleno on which last processing completed, Application level field and not used for screen mnt)
+		L.A.E. 
+			A:MEMBER_MNT => CycleNo = GroupParam.CycleNo
+			T:COLLECTION => CycleNo = CycleNo + 1
+	- PendingShareAmount (Pending share installment amount)
+		L.A.E  T:COLLECTION => 
+			IF <<Input_User_defaulter_share_payment>> 
+				PendingShareAmount = PendingShareAmount + GroupParam.ShareFaceValue
+			IF <<Input_user_share_face_amount>> > GroupParam.ShareFaceValue
+				PendingShareAmount = 0
+	- PaidFees (Total paid fees for non payment of share installments)
+		L.A.E. 
+			T:COLLECTION
+				IF <<Input_User_defaulter_share_payment>> 
+					IF isUserEligibleForFee
+						PaidFees = PaidFees + GroupParam.FeeAmountForNoPayout
+			T:POST:YEAREND => PaidFees = 0
+	- LoanDisbAmount (Total disbursed loan amount)
+		L.A.E.
+			T:LOANDISBURSE => LoanDisbAmount = LoanDisbAmount + <<Input_Loan_Amount>>
+			T:POST:YEAREND => LoanDisbAmount = 0
+	- LoanBalance (Showing current pending loan balance)
+		L.A.E  
+			T:PRE:MEETING => 
+				IF ((CycleNo < GroupParam.CycleNo) && (LoanBalance > 0)) (Assertion condition as to avoid redundent processing)
+					LoanBalance = LoanBalance + calcInterestAmount (Generic function for calculating interest it will use GroupParam LoanRateOfInterest, LoanInterestBase)
+	- ActiveLoanCount (Active loan count)
+		L.A.E.
+			T:LOANDISBURSE => ActiveLoanCount = ActiveLoanCount + 1
+			T:COLLECTION => IF LoanBalance = 0 THEN ActiveLoanCount = 0
+	- AccrualInterestAmount (Interest amount Accumulated till now for running assessment year)
+		L.A.E.
+			T:PRE:MEETING => AccrualInterestAmount = AccrualInterestAmount + calcInterestAmount
+			T:COLLECTION => IF LoanBalance = 0 THEN AccrualInterestAmount = 0
+	- PaidInterestAmount (Interest amount Paid till now for running assessment year)
+		L.A.E.
+			T:COLLECTION => PaidInterestAmount = PaidInterestAmount + computeInterest(<<InputInstallmentAmount>>)
+			T:POST:YEAREND => PaidInterestAmount = 0
+	- DefaultInstallmentAmount
+		L.A.E. T:LOANDISBURSE => DefaultInstallmentAmount = PMT (LoanBalance, GroupParam.NoOfInstallments, GroupParam.LoanRateOfInterest, GroupParam.LoanInterestBase)
+	- DateLastLoanDisb
+		L.A.E. T:LOANDISBURSE => Date_last_loan_disb = Today_date
+	* Not used in 1st phase
+	L.A.E - 
+		A:MEMBER_MNT
+		M:MEMBER_MNT
+		T:POST:YEAREND => 
+			Move data of member to history table
+				MemberBalanceHistory
+					ID, GroupMasterId, GroupMemberID, AssessmentYear, PendingShareAmount, PaidFees, LoanDisbAmount, LoanBalance, ActiveLoanCount, AccrualInterestAmount, PaidInterestAmount, DefaultInstallmentAmount, DateLastLoanDisb
+					
+	
+(5) Ledger Entry (used mostly for every cycle of meeting)
+	Screen-1 Installments
+	LoanInstallements
+	- GroupMasterId
+	- GroupMemberID
+	- CycleNo (Auto generated based on no of MeetingPeriods since DateOfStart)
+	- Date
+	- LoanPaidAmount
+	
+	LoanDisbursement
+	Screen-2
+		BalancedCash
+		MemberId
+		LoanAmount (Validations of eligibility)
+		GauranterIds (Validations of no of gauranters)
+		+Add Grid
+	
+	LoanMaster
+	- GroupMasterId
+	- GroupMemberID
+	- LoanAmount
+	- GauranterIds
+	- Date
+	- CycleNo
+	Key: CycleNo, GroupMasterId, GroupMemberID
+	
+LoanMaster User Story:
+	1. User will take loan
+		one entry will be done under LoanMaster
+		LoanMaster.LoanBalance = LoanMaster.LoanBalance + current loan amount.
+LoanInstallement User Story:
+	1. User will pay installment amount for loan
+		one entry will be done under LoanInstallements
+		LoanMaster.LoanBalance = LoanMaster.LoanBalance + Interest_Amount
+		LoanMaster.LoanBalance = LoanMaster.LoanBalance - Installment_amount
+(7) Member Balance Inquiry
+
+(8) Reports
+	Loan Eligibility (Order by eligible_loan_amount desc, last_loan_taken_date, last_loan_taken_amount, last_no_of_loan)
+	Cash Balancing (Available cash for disbursment)
+	Defaulter List
+	
+	
+Abbrevation
+	L.A.E. - Linked Activity Event
+	Events (Events category on which required services integration with resources like DB, Web service etc..)
+		A:GROUP_REG - Group Registration
+		A:RULE_BOOK_MNT - Rule book maintanance first time
+		M:RULE_BOOK_MNT - Rule book maintanance Modify
+		A:MEMBER_MNT - Member maintanance addition
+		M:MEMBER_MNT - Member maintanance modification
+		T:LOGIN - Login
+		T:PRE:MEETING - Meeting initiation
+		T:PRE:COLLECTION - Meeting Cash collection start event
+		T:COLLECTION - Collection of share amount + loan installment amount on individual member
+		T:POST:COLLECTION - Meeting Cash collection for Individual member
+		T:PRE:LOANDISBURSE - Loan disbursment initiation
+		T:LOANDISBURSE - Loan disbursment to individual member
+		T:POST:LOANDISBURSE - Loan disbursment completion
+		T:POST:MEETING - Meeting completion
+		T:PRE:YEAREND - Year End initiation
+		T:POST:YEAREND - Year End completion
+		T:OTHER_SHARE_DISBURSE - other share amount disbursement, this will be face amount which will be added to all members ShareOtherFaceBalance
+	
+KeyPoints in Mind
+- Best user experience (e.x. input fields provided to be the best convenient way for entering data). No compromise on quality of application.
+- Learn and evolve based on on-going Requirements
+- Do the simplest thing that could possibly work
+
+ROSCA (Rotating Savings & Credit Associations)
+PartnerHand
+ASCA (Accumulating Savings & Credit Associations)
+VSLA (Village Savings & Loan Associations)
+EmoneyPool
+
+Download and get OTP..
+
+Transaction to be having flag of cash flg and drcr flg, this will be used to update group_master level cash_balance field update
+
+https://www.youtube.com/watch?v=_dmoXYJr6rk

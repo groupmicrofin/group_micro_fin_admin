@@ -1,0 +1,23 @@
+CREATE TABLE `groupmicrofin`.`group_params`(  
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `group_master_id` INT(10) NOT NULL,
+  `group_start_dt` DATE,
+  `meeting_frequency` INT(1),
+  `meeting_schedule` VARCHAR(20),
+  `year_end_month` INT(2),
+  `share_face_value` FLOAT(10),
+  `ln_int_rate` FLOAT(5),
+  `ln_int_base` INT(2),
+  `ln_disb_amt_max_lim_per` FLOAT(5),
+  `ln_max_active_loan_count` INT(2),
+  `ln_gauranters_count` INT(2),
+  `ln_max_installment_count` INT(2),
+  `fee_amt_no_share_payout` DOUBLE,
+  `fee_waiver_no_cycles` INT(2),
+  `assessment_year` VARCHAR(12)NOT NULL,
+  `amt_rounding_dec_digits` INT(2),
+  `audit_created_dttm` DATETIME,
+  `audit_updated_dttm` DATETIME,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_group_master_master_id` FOREIGN KEY (`group_master_id`) REFERENCES `groupmicrofin`.`group_masters`(`id`)
+);

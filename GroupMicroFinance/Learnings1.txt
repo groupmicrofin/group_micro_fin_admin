@@ -1,0 +1,5 @@
+1. open cmd.
+2. path:cd c\work\GroupMicroFinance\DB\Scripts\CleanUpData.sql.
+3.mysql -u root -p.
+4.password.
+5.mysql> source CleanUpData.sql
