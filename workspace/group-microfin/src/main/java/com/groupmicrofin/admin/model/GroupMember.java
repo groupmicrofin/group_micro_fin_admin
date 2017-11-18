@@ -24,10 +24,10 @@ public class GroupMember {
     private int amtPaidInt;
     private int amtPaidPrinc;
     private int amtDefInstallment;
-    private int datLastLnDisb;
+    private LocalDate datLastLnDisb;
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(int id) {
@@ -35,7 +35,7 @@ public class GroupMember {
     }
 
     public int getGroupMasterId() {
-        return groupMasterId;
+        return this.groupMasterId;
     }
 
     public void setGroupMasterId(int groupMasterId) {
@@ -43,7 +43,7 @@ public class GroupMember {
     }
 
     public String getAssessmentYear() {
-        return assessmentYear;
+        return this.assessmentYear;
     }
 
     public void setAssessmentYear(String assessmentYear) {
@@ -51,7 +51,7 @@ public class GroupMember {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -59,7 +59,7 @@ public class GroupMember {
     }
 
     public String getLoginId() {
-        return loginId;
+        return this.loginId;
     }
 
     public void setLoginId(String loginId) {
@@ -67,7 +67,7 @@ public class GroupMember {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -75,7 +75,7 @@ public class GroupMember {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
@@ -83,7 +83,7 @@ public class GroupMember {
     }
 
     public int getMobileNo() {
-        return mobileNo;
+        return this.mobileNo;
     }
 
     public void setMobileNo(int mobileNo) {
@@ -91,7 +91,7 @@ public class GroupMember {
     }
 
     public LocalDate getBirthDate() {
-        return birthDate;
+        return this.birthDate;
     }
 
     public void setBirthDate(LocalDate birthDate) {
@@ -99,7 +99,7 @@ public class GroupMember {
     }
 
     public String getKycId() {
-        return kycId;
+        return this.kycId;
     }
 
     public void setKycId(String kycId) {
@@ -107,7 +107,7 @@ public class GroupMember {
     }
 
     public int getCycleNo() {
-        return cycleNo;
+        return this.cycleNo;
     }
 
     public void setCycleNo(int cycleNo) {
@@ -115,7 +115,7 @@ public class GroupMember {
     }
 
     public int getAmtPendShare() {
-        return amtPendShare;
+        return this.amtPendShare;
     }
 
     public void setAmtPendShare(int amtPendShare) {
@@ -123,7 +123,7 @@ public class GroupMember {
     }
 
     public int getAmtPaidFee() {
-        return amtPaidFee;
+        return this.amtPaidFee;
     }
 
     public void setAmtPaidFee(int amtPaidFee) {
@@ -131,7 +131,7 @@ public class GroupMember {
     }
 
     public int getAmtLnDisb() {
-        return amtLnDisb;
+        return this.amtLnDisb;
     }
 
     public void setAmtLnDisb(int amtLnDisb) {
@@ -139,7 +139,7 @@ public class GroupMember {
     }
 
     public int getAmtLnBalance() {
-        return amtLnBalance;
+        return this.amtLnBalance;
     }
 
     public void setAmtLnBalance(int amtLnBalance) {
@@ -147,7 +147,7 @@ public class GroupMember {
     }
 
     public int getNoActiveLn() {
-        return noActiveLn;
+        return this.noActiveLn;
     }
 
     public void setNoActiveLn(int noActiveLn) {
@@ -155,7 +155,7 @@ public class GroupMember {
     }
 
     public int getAmtAccrInt() {
-        return amtAccrInt;
+        return this.amtAccrInt;
     }
 
     public void setAmtAccrInt(int amtAccrInt) {
@@ -163,7 +163,7 @@ public class GroupMember {
     }
 
     public int getAmtPaidInt() {
-        return amtPaidInt;
+        return this.amtPaidInt;
     }
 
     public void setAmtPaidInt(int amtPaidInt) {
@@ -171,7 +171,7 @@ public class GroupMember {
     }
 
     public int getAmtPaidPrinc() {
-        return amtPaidPrinc;
+        return this.amtPaidPrinc;
     }
 
     public void setAmtPaidPrinc(int amtPaidPrinc) {
@@ -179,18 +179,18 @@ public class GroupMember {
     }
 
     public int getAmtDefInstallment() {
-        return amtDefInstallment;
+        return this.amtDefInstallment;
     }
 
     public void setAmtDefInstallment(int amtDefInstallment) {
         this.amtDefInstallment = amtDefInstallment;
     }
 
-    public int getDatLastLnDisb() {
-        return datLastLnDisb;
+    public LocalDate getDatLastLnDisb() {
+        return this.datLastLnDisb;
     }
 
-    public void setDatLastLnDisb(int datLastLnDisb) {
+    public void setDatLastLnDisb(LocalDate datLastLnDisb) {
         this.datLastLnDisb = datLastLnDisb;
     }
 }

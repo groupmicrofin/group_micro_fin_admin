@@ -19,6 +19,7 @@ CREATE TABLE `groupmicrofin`.`group_members`(
   `amtpaidPrinc`INT(11),
   `amtdefInstallment`INT(11),  
   `datlastLnDisb`INT(12),                                                      
-   PRIMARY KEY (`id`)
+   PRIMARY KEY (`id`),
+   CONSTRAINT `fk_group_master_master_id` FOREIGN KEY (`group_master_id`) REFERENCES `groupmicrofin`.`group_masters`(`id`)
  
 );

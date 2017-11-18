@@ -7,10 +7,12 @@ public class RuleBook {
     private LocalDate groupStartDt;
     private int meetingFrequency;
     private String meetingSchedule;
+    private LocalDate datLastMeeting;
     private int yearEndMonth;
     private float shareFaceValue;
     private float lnIntRate;
     private int lnIntBase;
+    public int cycleNo;
     private float lnDisbAmtMaxLimPercent;
     private int lnMaxActiveLoanCount;
     private int lnGaurantersCount;
@@ -21,18 +23,23 @@ public class RuleBook {
     private int amtShareFacBal;
     private int amtShareFacBalOthers;
     private int amtMiscDr;
-    private int groupMemberId;
-    private String eventName;
-    private int txnAmt;
-    private int txnAmtOther;
-    private LocalDate lastMeetingDate;
+    private LocalDate datNextMeeting;
+    private String lastActivityStatus;
 
-    public LocalDate getLastMeetingDate() {
-        return this.lastMeetingDate;
+    public String getLastActivityStatus() {
+        return this.lastActivityStatus;
     }
 
-    public void setLastMeetingDate(LocalDate lastMeetingDate) {
-        this.lastMeetingDate = lastMeetingDate;
+    public void setLastActivityStatus(String lastActivityStatus) {
+        this.lastActivityStatus = lastActivityStatus;
+    }
+
+    public LocalDate getDatNextMeeting() {
+        return this.datNextMeeting;
+    }
+
+    public void setDatNextMeeting(LocalDate datNextMeeting) {
+        this.datNextMeeting = datNextMeeting;
     }
 
     public int getGroupMasterId() {
@@ -179,36 +186,21 @@ public class RuleBook {
         this.amtMiscDr = amtMiscDr;
     }
 
-
-    public int getGroupMemberId() {
-        return this.groupMemberId;
+    public LocalDate getDatLastMeeting() {
+        return this.datLastMeeting;
     }
 
-    public void setGroupMemberId(int groupMemberId) {
-        this.groupMemberId = groupMemberId;
+    public void setDatLastMeeting(LocalDate datLastMeeting) {
+        this.datLastMeeting = datLastMeeting;
     }
 
-    public String getEventName() {
-        return this.eventName;
+    public int getCycleNo() {
+        return this.cycleNo;
     }
 
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
-    }
-
-    public int getTxnAmt() {
-        return this.txnAmt;
-    }
-
-    public void setTxnAmt(int txnAmt) {
-        this.txnAmt = txnAmt;
-    }
-
-    public int getTxnAmtOther() {
-        return this.txnAmtOther;
-    }
-
-    public void setTxnAmtOther(int txnAmtOther) {
-        this.txnAmtOther = txnAmtOther;
+    public void setCycleNo(int cycleNo) {
+        this.cycleNo = cycleNo;
     }
 }
+
+

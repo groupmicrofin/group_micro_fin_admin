@@ -8,5 +8,5 @@ public interface GroupMasterRepository {
 
     public void modifyGroupMaster(GroupMaster groupMaster);
 
-    public GroupMaster findGroupMaster(int id);
+    public GroupMaster findById(int id);
 }

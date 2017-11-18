@@ -4,6 +4,7 @@ import com.groupmicrofin.admin.common.GroupAdminFactory;
 import com.groupmicrofin.admin.model.GroupMaster;
 import com.groupmicrofin.admin.model.GroupParam;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.Assert;
 
@@ -17,16 +18,35 @@ public class GroupParamRepositoryTest {
 
     @Before
     public void before() {
-        groupMasterRepository = new GroupMasterRepositoryMSImpl();
-        groupParamRepository = new GroupParamRepositoryMSImpl();
+        this.groupMasterRepository = new GroupMasterRepositoryMSImpl();
+        this.groupParamRepository = new GroupParamRepositoryMSImpl();
     }
 
     @Test
     public void addGroupParamTest() {
         GroupMaster groupMaster = GroupAdminFactory.getGroupMasterDummy();
-        groupMasterRepository.addGroupMaster(groupMaster);
+        this.groupMasterRepository.addGroupMaster(groupMaster);
         GroupParam groupParam = GroupAdminFactory.getGroupParamDummy(groupMaster.getId());
-        int result = groupParamRepository.addGroupParam(groupParam);
+        int result = this.groupParamRepository.addGroupParam(groupParam);
         assertTrue(result > 0);
+
+        groupParam = this.groupParamRepository.findByGroupMasterId(groupParam.getGroupMasterId());
+        assertTrue(groupParam.getGroupMasterId() > 0);
+        System.out.println(groupParam);
+
     }
+
+    @Test
+    public void updateGroupParamTest() {
+        GroupMaster groupMaster = GroupAdminFactory.getGroupMasterDummy();
+        this.groupMasterRepository.addGroupMaster(groupMaster);
+        GroupParam groupParam = GroupAdminFactory.updateGroupParamDummy(79);
+        this.groupParamRepository.updateGroupParam(groupParam);
+
+    }
+
+
 }
+
+
+

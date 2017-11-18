@@ -72,14 +72,13 @@ public class GroupMasterRepositoryMSImpl implements GroupMasterRepository {
     }
 
     @Override
-    public GroupMaster findGroupMaster(int id) {
+    public GroupMaster findById(int id) {
         GroupMaster groupMaster = new GroupMaster();
         Connection conn = null;
         PreparedStatement preparedStatement = null;
         try {
             conn = ConnectionManager.getConnection();
-            String SELECT_GROUP_M_SQL = "SELECT id,NAME,country,town,pincode,login_id,email,PASSWORD,audit_created_dttm,audit_updated_dttm \n" +
-                    "FROM  groupmicrofin.group_masters WHERE id = ?";
+            String SELECT_GROUP_M_SQL = "SELECT id,NAME,country,town,pincode,login_id,email,PASSWORD,audit_created_dttm,audit_updated_dttm " + "FROM  groupmicrofin.group_masters WHERE id = ?";
             preparedStatement = conn.prepareStatement(SELECT_GROUP_M_SQL);
             preparedStatement.setInt(1, id);
 

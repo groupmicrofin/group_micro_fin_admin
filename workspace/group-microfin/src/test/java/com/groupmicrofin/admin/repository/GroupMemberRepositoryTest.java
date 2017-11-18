@@ -1,38 +1,37 @@
 package com.groupmicrofin.admin.repository;
 
+import com.groupmicrofin.admin.common.GroupAdminFactory;
+import com.groupmicrofin.admin.model.*;
 import com.groupmicrofin.admin.model.GroupMember;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+
 import java.time.LocalDate;
+import java.util.Random;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-public class GroupMemberRepositoryTest {
 
+public class GroupMemberRepositoryTest {
+    GroupMasterRepository groupMasterRepository;
     GroupMemberRepository groupMemberRepository;
 
     @Before
-    public void before(){
-        groupMemberRepository = new GroupMemberRepositoryMSImpl();
+    public void before() {
+        this.groupMasterRepository = new GroupMasterRepositoryMSImpl();
+        this.groupMemberRepository = new GroupMemberRepositoryMSImpl();
     }
 
     @Test
-    public void addGroupMemberTest(){
-        GroupMember groupMember = getGroupMemberDummy();
-        int result = groupMemberRepository.addGroupMember(groupMember);
-        assertTrue(result>0);
-    }
 
-    public GroupMember getGroupMemberDummy(){
-        GroupMember groupMember = new GroupMember();
+    public void addGroupMemberTest() {
+        GroupMaster groupMaster = GroupAdminFactory.getGroupMasterDummy();
+        this.groupMasterRepository.addGroupMaster(groupMaster);
+        GroupMember groupMember = GroupAdminFactory.getGroupMemberDummy(groupMaster.getId());
+        int result = this.groupMemberRepository.addGroupMember(groupMember);
+        assertTrue(result > 0);
 
-        groupMember.setName("omar");
-        groupMember.setLoginId("102004");
-        groupMember.setEmail("ok@live.com");
-        groupMember.setPassword("passw0rd");
-        groupMember.setMobileNo(1000);
-        groupMember.setBirthDate(LocalDate.of(1993,8,18));
-        groupMember.setKycId("12");
-        return groupMember;
     }
 
 }

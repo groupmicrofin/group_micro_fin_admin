@@ -6,6 +6,7 @@ public interface GroupBalanceRepository {
 
     public int addGroupBalance(GroupBalance groupBalance);
 
-    public void modifyGroupBalance(GroupBalance groupBalance);
+    public void updateGroupBalance(GroupBalance groupBalance);
 
+    public GroupBalance findByGroupMasterId(int groupMasterId);
 }

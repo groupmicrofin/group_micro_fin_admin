@@ -7,11 +7,12 @@ import java.sql.*;
 
 public class GroupBalanceHistRepositoryMSImpl implements GroupBalanceHistRepository {
 
+    @Override
     public int addGroupBalanceHist(GroupBalanceHist groupBalanceHist) {
         //To connect with database
-        Connection conn=null;
-        PreparedStatement preparedStatement=null;
-        int result=0;
+        Connection conn = null;
+        PreparedStatement preparedStatement = null;
+        int result = 0;
         try {
             conn = ConnectionManager.getConnection();
 
@@ -19,18 +20,15 @@ public class GroupBalanceHistRepositoryMSImpl implements GroupBalanceHistReposit
             INSERT_GROUP_M_SQL = "INSERT INTO groupmicrofin.group_balance_hists(group_master_id,assessment_year,amt_share_fac_bal,amt_share_fac_bal_others,cycle_no,dat_last_meeting,dat_next_meeting,last_activity_status,audit_created_dttm,audit_updated_dttm )" +
                     "VALUES (?,?,?,?,?,?,?,?,Now(),Now())";
 
-            preparedStatement = conn.prepareStatement(INSERT_GROUP_M_SQL);
-            preparedStatement.setInt(1,groupBalanceHist.getGroupMasterId());
-            preparedStatement.setString(2,groupBalanceHist.getAssessmentYear());
-            preparedStatement.setInt(3,groupBalanceHist.getAmtShareFacBal());
-            preparedStatement.setInt(4,groupBalanceHist.getAmtShareFacBalOthers());
-            preparedStatement.setInt(5,groupBalanceHist.getCycleNo());
-            preparedStatement.setDate(6,Date.valueOf(groupBalanceHist.getDatLastMeeting()));
-            preparedStatement.setDate(7,Date.valueOf(groupBalanceHist.getDatNextMeeting()));
-            preparedStatement.setString(8,groupBalanceHist.getLastActivityStatus());
-
-
-
+            preparedStatement = conn.prepareStatement(INSERT_GROUP_M_SQL, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, groupBalanceHist.getGroupMasterId());
+            preparedStatement.setString(2, groupBalanceHist.getAssessmentYear());
+            preparedStatement.setInt(3, groupBalanceHist.getAmtShareFacBal());
+            preparedStatement.setInt(4, groupBalanceHist.getAmtShareFacBalOthers());
+            preparedStatement.setInt(5, groupBalanceHist.getCycleNo());
+            preparedStatement.setDate(6, Date.valueOf(groupBalanceHist.getDatLastMeeting()));
+            preparedStatement.setDate(7, Date.valueOf(groupBalanceHist.getDatNextMeeting()));
+            preparedStatement.setString(8, groupBalanceHist.getLastActivityStatus());
 
 
             result = preparedStatement.executeUpdate();
@@ -45,14 +43,14 @@ public class GroupBalanceHistRepositoryMSImpl implements GroupBalanceHistReposit
             }
             e.printStackTrace();
         } finally {
-            if(preparedStatement!=null){
+            if (preparedStatement != null) {
                 try {
                     preparedStatement.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
-            if(conn!=null){
+            if (conn != null) {
                 try {
                     conn.close();
                 } catch (SQLException e) {
@@ -65,6 +63,7 @@ public class GroupBalanceHistRepositoryMSImpl implements GroupBalanceHistReposit
         return result;
     }
 
+    @Override
     public void modifyGroupBalanceHist(GroupBalanceHist groupBalanceHist) {
         //TODO In future provide implementation of GroupBalanceHist based on user story
     }

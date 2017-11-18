@@ -6,70 +6,55 @@ import com.groupmicrofin.admin.common.MeetingFrequency;
 import com.groupmicrofin.admin.model.GroupBalance;
 import com.groupmicrofin.admin.model.GroupMaster;
 import com.groupmicrofin.admin.model.GroupParam;
-import com.groupmicrofin.admin.model.GrpTxnLog;
 import com.groupmicrofin.admin.model.rule.RuleBook;
-import com.groupmicrofin.admin.repository.GroupMasterRepository;
-import com.groupmicrofin.admin.repository.GroupMasterRepositoryMSImpl;
+import com.groupmicrofin.admin.repository.*;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertTrue;
 
 public class RuleBookServiceTest {
 
     RuleBookServiceImpl ruleBookService;
     GroupMasterRepository groupMasterRepository;
+    GroupParamRepository groupParamRepository;
+    GroupBalanceRepository groupBalanceRepository;
 
     @Before
     public void setup() {
         this.ruleBookService = new RuleBookServiceImpl();
         this.groupMasterRepository = new GroupMasterRepositoryMSImpl();
-    }
-
-    @Test
-    public void testAssessmentYear() {
-        LocalDate grpStartDate = LocalDate.of(2016, 1, 1);
-        LocalDate lstMeetingDate = LocalDate.of(2016, 1, 1);
-        int yearEndMonth = 12;
-        int assYears = this.ruleBookService.getAssessmentYears(grpStartDate, lstMeetingDate, yearEndMonth);
-        assertTrue(assYears == 1);
-
-        grpStartDate = LocalDate.of(2010, 1, 1);
-        lstMeetingDate = LocalDate.of(2014, 1, 1);
-        assYears = this.ruleBookService.getAssessmentYears(grpStartDate, lstMeetingDate, yearEndMonth);
-        assertTrue(assYears == 5);
-
-        grpStartDate = LocalDate.of(2010, 1, 1);
-        lstMeetingDate = LocalDate.of(2011, 6, 1);
-        yearEndMonth = 5;
-        assYears = this.ruleBookService.getAssessmentYears(grpStartDate, lstMeetingDate, yearEndMonth);
-        assertTrue(assYears == 3);
-
+        this.groupParamRepository = new GroupParamRepositoryMSImpl();
+        this.groupBalanceRepository = new GroupBalanceRepositoryMSImpl();
     }
 
     @Test
     public void addRulBookToGroupTest() {
         GroupMaster groupMaster = GroupAdminFactory.getGroupMasterDummy();
+        GroupParam groupParam = this.groupParamRepository.findByGroupMasterId(groupMaster.getId());
+        GroupBalance groupBalance = this.groupBalanceRepository.findByGroupMasterId(groupMaster.getId());
         this.groupMasterRepository.addGroupMaster(groupMaster);
         RuleBook ruleBook = GroupAdminFactory.getRuleBookDummy(groupMaster.getId());
         this.ruleBookService.addRuleBookToGroup(ruleBook);
-        //TODO findGroupParamByGroupMasterId get object of GroupParam
-        //TODO findGroupBalanceByGroupMasterId get object of GroupBalance
+
+        assertNotNull(groupParam);
+        assertNotNull(groupBalance);
+        assertTrue(ruleBook.getCycleNo() == 94);
+        assertTrue(ruleBook.getYearEndMonth() == 12);
+        System.out.println(groupParam.getAssessmentYear());
+
     }
 
-
-    @Ignore
+    @Test
     public void testConvertToGroupParam() {
-
         RuleBook ruleBook = new RuleBook();
-        GroupParam groupParam = this.ruleBookService.convertToGroupParam(ruleBook);
         ruleBook.setGroupMasterId(1);
-        ruleBook.setGroupStartDt(LocalDate.of(2004, 11, 15));
+        ruleBook.setGroupStartDt(LocalDate.of(2010, 1, 1));
         ruleBook.setMeetingFrequency(MeetingFrequency.MONTHLY);
-        ruleBook.setMeetingSchedule("0 0 20 ? * SUNL");
+        ruleBook.setMeetingSchedule("0 0 0 ? * SUNL");
         ruleBook.setYearEndMonth(12);
         ruleBook.setShareFaceValue(100);
         ruleBook.setLnIntRate(12);
@@ -81,33 +66,52 @@ public class RuleBookServiceTest {
         ruleBook.setFeeAmtNoSharePayout(200);
         ruleBook.setFeeWaiverNoCycles(3);
         ruleBook.setAmtRoundingDecDigits(2);
-        assertTrue(ruleBook.getGroupMasterId() > 0);
+
+
+        GroupParam groupParam = this.ruleBookService.convertToGroupParam(ruleBook);
+
+        assertTrue(groupParam.getGroupStartDt().equals(ruleBook.getGroupStartDt()));
+        assertTrue(groupParam.getMeetingSchedule().equals(ruleBook.getMeetingSchedule()));
+        assertTrue(groupParam.getMeetingFrequency() == ruleBook.getMeetingFrequency());
+        assertTrue(groupParam.getYearEndMonth() == ruleBook.getYearEndMonth());
+        assertTrue(groupParam.getGroupMasterId() == ruleBook.getGroupMasterId());
+        assertTrue(groupParam.getShareFaceValue() == ruleBook.getShareFaceValue());
+        assertTrue(groupParam.getLnIntRate() == ruleBook.getLnIntRate());
+        assertTrue(groupParam.getLnIntBase() == ruleBook.getLnIntBase());
+        assertTrue(groupParam.getLnDisbAmtMaxLimPercent() == ruleBook.getLnDisbAmtMaxLimPercent());
+        assertTrue(groupParam.getLnMaxActiveLoanCount() == ruleBook.getLnMaxActiveLoanCount());
+        assertTrue(groupParam.getLnGaurantersCount() == ruleBook.getLnGaurantersCount());
+        assertTrue(groupParam.getLnMaxInstallmentCount() == ruleBook.getLnMaxInstallmentCount());
+        assertTrue(groupParam.getFeeAmtNoSharePayout() == ruleBook.getFeeAmtNoSharePayout());
+        assertTrue(groupParam.getFeeWaiverNoCycles() == ruleBook.getFeeWaiverNoCycles());
+
+        assertTrue(groupParam.getAmtRoundingDecDigits() == ruleBook.getAmtRoundingDecDigits());
+
     }
 
-    @Ignore
+    @Test
     public void testConvertToGroupBalance() {
-
         RuleBook ruleBook = new RuleBook();
-        GroupBalance groupBalance = this.ruleBookService.convertToGroupBalance(ruleBook);
         ruleBook.setGroupMasterId(1);
-        ruleBook.setAmtShareFacBal(1000);
-        ruleBook.setAmtShareFacBalOthers(1500);
+        ruleBook.setAmtShareFacBal(2000);
+        ruleBook.setAmtShareFacBalOthers(100);
         ruleBook.setAmtMiscDr(100);
+        ruleBook.setDatLastMeeting(LocalDate.of(2017, 10, 29));
+        ruleBook.setDatNextMeeting(LocalDate.of(2017, 11, 26));
+        ruleBook.setCycleNo(8);
 
-        assertTrue(ruleBook.getGroupMasterId() > 0);
+
+        GroupBalance groupBalance = this.ruleBookService.convertToGroupBalance(ruleBook);
+
+        assertTrue(groupBalance.getGroupMasterId() == ruleBook.getGroupMasterId());
+        assertTrue(groupBalance.getAmtShareFacBal() == ruleBook.getAmtShareFacBal());
+        assertTrue(groupBalance.getAmtShareFacBalOthers() == ruleBook.getAmtShareFacBalOthers());
+        assertTrue(groupBalance.getAmtMiscDr() == ruleBook.getAmtMiscDr());
+        assertTrue(groupBalance.getDatLastMeeting() == (ruleBook.getDatLastMeeting()));
+        assertTrue(groupBalance.getCycleNo() == (ruleBook.getCycleNo()));
+        assertTrue(groupBalance.getDatNextMeeting() == (ruleBook.getDatNextMeeting()));
     }
 
-    @Ignore
-    public void testConvertToGrpTxnLog() {
-        RuleBook ruleBook = new RuleBook();
-        GrpTxnLog grpTxnLog = this.ruleBookService.convertToGrpTxnLog(ruleBook);
-        ruleBook.setGroupMasterId(1);
-        ruleBook.setGroupMemberId(1);
-        ruleBook.setEventName("ADD ON MY NOW");
-        ruleBook.setTxnAmt(1500);
-        ruleBook.setTxnAmtOther(100);
-        assertTrue(ruleBook.getGroupMasterId() > 0);
-    }
 
 }
 
